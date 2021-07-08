@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt     # For plotting
 import matplotlib.dates as mdates   # For formatting dates when plotting
 import matplotlib.colors as colors  # For truncating colorbars
 import matplotlib.style as style
-import xarray as xr                 # For dealing with netCDF data
+import xarray as xr  
+import matplotlib.path as mpath  # For dealing with netCDF data
 import pandas as pd                 # A quick way to deal with time stamps
 import cartopy.crs as ccrs
 
