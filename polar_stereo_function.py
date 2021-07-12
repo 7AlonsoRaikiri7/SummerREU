@@ -73,3 +73,34 @@ def circular_polar_plot(data, lat_min, colors, title_, no_col_bar=False,
     ax.gridlines() #add gridlines
     ax.set_title(str(title_), fontsize=20) #set the title and fontzise
     ax.set_facecolor('0.5') #make the background (usually land) gray
+    
+def circular_polar_wind_plot(U_data, V_data, lat_min, colors, title_, plot_type='stream', s_density=1, b_linewidth=0.95, q_scale=100):
+    
+    '''
+    This function requires an input of two xarray dataarrays with lat/lon and a third wind varaible
+    '''
+    xx, yy = np.meshgrid(U_data.lon, U_data.lat)
+    
+    #define the overall figure charachteristics
+    fig = plt.figure(figsize=[8,8]) #set the size of the figure
+    ax = fig.add_subplot(projection = ccrs.NorthPolarStereo(central_longitude=0)) #define the axes in terms of the polar projection
+    ax.set_extent((-180,180,int(lat_min),90), ccrs.PlateCarree()) #only include data above the minimum latitude
+    
+    #make the plot circular using matplotlib.path
+    theta = np.linspace(0, 2*np.pi, 100) 
+    center, radius = [0.5, 0.5], 0.5
+    verts = np.vstack([np.sin(theta), np.cos(theta)]).T #matrix transpose
+    circle = mpath.Path(verts * radius + center) #this is now a circle boundary defined in matplotlib
+    ax.set_boundary(circle, transform=ax.transAxes) #cut the plot at the circle boundary
+    
+    if(plot_type.lower()=='stream'):
+        ax.streamplot(xx,yy,U_data.data,V_data.data, density=s_density, transform=ccrs.PlateCarree())
+    elif(plot_type.lower() == 'barb'):
+        ax.barbs(xx,yy,U_data.data,V_data.data, length=6,sizes=dict(emptybarb=0.25, spacing=0.2, height=0.5), linewidth=b_linewidth, transform=ccrs.PlateCarree())
+    elif(plot_type.lower()== 'quiver'):
+        ax.quiver(xx,yy,U_data.data,V_data.data, scale=q_scale, transform=ccrs.PlateCarree())
+    
+    #add details to the figure after the data is plotted
+    ax.coastlines() #add coastlines
+    ax.gridlines() #add gridlines
+    ax.set_title(str(title_), fontsize=20) #set the title and fontzise
