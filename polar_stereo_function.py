@@ -74,7 +74,7 @@ def circular_polar_plot(data, lat_min, colors, title_, no_col_bar=False,
     ax.set_title(str(title_), fontsize=20) #set the title and fontzise
     ax.set_facecolor('0.5') #make the background (usually land) gray
     
-def circular_polar_wind_plot(U_data, V_data, lat_min, colors, title_, plot_type='stream', s_density=1, b_linewidth=0.95, q_scale=100):
+def circular_polar_wind_plot(U_data, V_data, lat_min, title_, plot_type='stream', s_density=1, b_linewidth=0.95, q_scale=100):
     
     '''
     This function requires an input of two xarray dataarrays with lat/lon and a third wind varaible
