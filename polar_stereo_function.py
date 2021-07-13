@@ -44,6 +44,9 @@ def circular_polar_plot(data, lat_min, colors, title_, no_col_bar=False,
     else:
         fig.subplots_adjust(right=0.87) #make space at the right side of the plot for the colorbar
         plotting = data.plot(ax=ax, cmap=str(colors), add_colorbar=False, transform=ccrs.PlateCarree(), levels=levels_, add_labels=False)
+#         plt.annotate('k',(.29,.87),xycoords='axes fraction')
+
+
 
         ####################################### define the colorbar ############################################
         if horizontal: #=True means we want the colobar horizontal
@@ -73,6 +76,7 @@ def circular_polar_plot(data, lat_min, colors, title_, no_col_bar=False,
     ax.gridlines() #add gridlines
     ax.set_title(str(title_), fontsize=20) #set the title and fontzise
     ax.set_facecolor('0.5') #make the background (usually land) gray
+
     
 def circular_polar_wind_plot(U_data, V_data, lat_min, title_, plot_type='stream', s_density=1, b_linewidth=0.95, q_scale=100):
     
