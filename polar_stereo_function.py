@@ -21,7 +21,8 @@ import cartopy.crs as ccrs
 
 def circular_polar_plot(data, lat_min, colors, title_, no_col_bar=False, 
                         cbar_label=False, levels_=False, cbar_levels_=False, 
-                        extend_kw=False, horizontal=False):
+                        extend_kw=False, horizontal=False, add_text=False,
+                        text_lat=-152, text_lon=57, text_string = 'K', text_size=24):
     
     '''
     This function requires an input of an xarray dataarray with lat/lon and a third varaible
@@ -31,6 +32,8 @@ def circular_polar_plot(data, lat_min, colors, title_, no_col_bar=False,
     fig = plt.figure(figsize=[8,8]) #set the size of the figure
     ax = fig.add_subplot(projection = ccrs.NorthPolarStereo(central_longitude=0)) #define the axes in terms of the polar projection
     ax.set_extent((-180,180,int(lat_min),90), ccrs.PlateCarree()) #only include data above the minimum latitude
+    if(add_text):
+        ax.text(text_lat, text_lon, text_string, fontsize=text_size, transform=ccrs.PlateCarree() ) 
     
     #make the plot circular using matplotlib.path
     theta = np.linspace(0, 2*np.pi, 100) 
@@ -38,6 +41,7 @@ def circular_polar_plot(data, lat_min, colors, title_, no_col_bar=False,
     verts = np.vstack([np.sin(theta), np.cos(theta)]).T #matrix transpose
     circle = mpath.Path(verts * radius + center) #this is now a circle boundary defined in matplotlib
     ax.set_boundary(circle, transform=ax.transAxes) #cut the plot at the circle boundary
+    
     
     if no_col_bar: #we don't include a colorbar if this argument is True
         data.plot(ax=ax,cmap=str(colors), add_colorbar=False, add_labels=False, transform=ccrs.PlateCarree())
